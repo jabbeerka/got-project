@@ -2,19 +2,14 @@ import React from 'react';
 import { Col, Row, Container, Button } from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import ItemList from '../itemList';
-import CharDetails from '../charDetails';
-import ErrorMessage from '../error/error';
+import CharacterPage from '../Pages/characterPage';
+import BooksPage from '../Pages/booksPage';
+import HousesPage from '../Pages/housesPage'
 
 
 export default class App extends React.Component {
     state = {
-        randomChar: true,
-        selectedChar: null,
-        error: false
-    }
-    onSelectedChar = (id) => {
-        this.setState({selectedChar: id})
+        randomChar: true
     }
     onError = () => {
         this.setState({error:true})
@@ -26,8 +21,7 @@ export default class App extends React.Component {
         this.onError()
     }
     render() {
-        const {randomChar, selectedChar, error} = this.state;
-        const someError = !error ? <CharDetails charId={selectedChar}/> : <ErrorMessage/>
+        const {randomChar} = this.state;
         const content = randomChar ? <RandomChar /> : null
         return (
             <>
@@ -42,12 +36,9 @@ export default class App extends React.Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col md='6'>
-                            <ItemList onSelectedChar={this.onSelectedChar}/>
-                        </Col>
-                        <Col md='6'>
-                            {someError}
-                        </Col>
+                        <CharacterPage/>
+                        <BooksPage/>
+                        <HousesPage/>
                     </Row>
                 </Container>
             </>

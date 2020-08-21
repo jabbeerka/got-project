@@ -1,36 +1,50 @@
 import React, {Component} from 'react';
-import { ListGroup, ListGroupItem } from 'reactstrap';
-import APIrequest from '../API/Api';
+import { ListGroup } from 'reactstrap';
 import Spinner from '../spinner/spinner';
+import styled from 'styled-components';
+
+
+const ListGroupItem = styled.li`
+        position: relative;
+        display: block;
+        padding: 0.75rem 1.25rem;
+        background-color: #fff;
+        border: 1px solid rgba(0, 0, 0, 0.125);
+        cursor: pointer;
+        border-radius: 5px;
+`
+
+
 
 export default class ItemList extends Component {
-    APIrequest = new APIrequest();
     state = {
-        char: null
+        itemList: null
     }
     componentDidMount() {
-        this.APIrequest.getAllCharacters()
-        .then((char) => {
-            this.setState({char})
+        const {getData} = this.props;
+        getData()
+        .then((itemList) => {
+            this.setState({itemList})
         });
     }
     renderItems= (arr) => {
         return arr.map((item) => {
-            const {id, name} = item
+            const {id} = item;
+            const label = this.props.renderItems(item)
             return (
-                <ListGroupItem key={id} onClick={()=> this.props.onSelectedChar(id)}>
-                    {name}
+                <ListGroupItem className="nav-link" key={id} onClick={()=> this.props.onSelectedItem(id)}>
+                    {label}
                 </ListGroupItem>
             )
         })
     } 
 
     render() {
-        const {char} = this.state;
-        if (!char) {
+        const {itemList} = this.state;
+        if (!itemList) {
             return <Spinner/>
         }
-        const item = this.renderItems(char);
+        const item = this.renderItems(itemList);
         return (
             <ListGroup >
                 {item}

@@ -56,6 +56,7 @@ export default class APIrequest {
   }
   _transformHouse = (house) => {
     return {
+      id: this._extractId(house),
       name: house.name,
       region: house.region,
       words: house.words,
@@ -66,9 +67,11 @@ export default class APIrequest {
   }
   _transformBook = (book) => {
     return {
+      id: this._extractId(book),
       name: book.name,
+      author: book.authors[0],
       numberOfPages: book.numberOfPages,
-      publiser: book.publiser,
+      publisher: book.publisher,
       released: book.released
     };
   }
