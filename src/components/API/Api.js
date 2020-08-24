@@ -23,7 +23,7 @@ export default class APIrequest {
   }
 
   getHouse = async (id) => {
-    const house = this.request(`/houses/${id}/`);
+    const house = await this.request(`/houses/${id}/`);
     return this._transformHouse(house);
   }
   getAllHouses = async () => {
@@ -35,6 +35,7 @@ export default class APIrequest {
     const character = await this.request(`/characters/${id}`);
     return this._transformCharacter(character);
   }
+
   getAllCharacters = async() => {
     const res = await this.request(`/characters?page=5&pageSize=10`);
     return res.map(this._transformCharacter);

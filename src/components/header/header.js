@@ -1,32 +1,27 @@
 import React, { useState } from 'react';
-import {NavLink, Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem
-} from 'reactstrap';
-// import { getData } from '../API/Api';
+import { Collapse, Navbar, NavbarToggler, Nav, NavItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
+
 
 const Header = () => {
     const [isOpen, setIsOpen] = useState(false);
-    // getData.getCharacters(583)
     const toggle = () => setIsOpen(!isOpen);
     return (
         <div>
             <Navbar color="light" light expand="md" className="mb-4">
-                <NavbarBrand href="/">Game of Thrones DB</NavbarBrand>
+                <Link className="navbar-brand" to="/"> Game of Thrones DB </Link>
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
                         <NavItem>
-                            <NavLink href="/components/">Characters</NavLink>
+                            <Link className="nav-link" to="/characters/">Characters</Link>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="#">Houses</NavLink>
+                            <Link className="nav-link" to="/houses/">Houses</Link>
                         </NavItem>
                         <NavItem>
-                            <NavLink href="#">Books</NavLink>
+                            <Link className="nav-link" to="/books/">Books</Link>
                         </NavItem>
                     </Nav>
                 </Collapse>
