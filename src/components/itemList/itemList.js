@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import { ListGroup } from 'reactstrap';
 import Spinner from '../spinner/spinner';
 import styled from 'styled-components';
@@ -14,41 +14,35 @@ const ListGroupItem = styled.li`
         border-radius: 5px;
 `
 
+const ItemList = ({ getData, renderItems, onSelectedItem }) => {
+    const [itemList, setItemList] = useState([]);
 
-
-export default class ItemList extends Component {
-    state = {
-        itemList: null
-    }
-    componentDidMount() {
-        const {getData} = this.props;
+    useEffect(() => {
         getData()
-        .then((itemList) => {
-            this.setState({itemList})
-        });
-    }
-    renderItems= (arr) => {
+            .then((data) => {
+                setItemList(data)
+            });
+    }, []);
+    const renderItem = (arr) => {
         return arr.map((item) => {
-            const {id} = item;
-            const label = this.props.renderItems(item)
+            const { id } = item;
+            const label = renderItems(item)
             return (
-                <ListGroupItem className="nav-link" key={id} onClick={()=> this.props.onSelectedItem(id)}>
+                <ListGroupItem className="nav-link" key={id} onClick={() => onSelectedItem(id)}>
                     {label}
                 </ListGroupItem>
             )
         })
-    } 
-
-    render() {
-        const {itemList} = this.state;
-        if (!itemList) {
-            return <Spinner/>
-        }
-        const item = this.renderItems(itemList);
-        return (
-            <ListGroup >
-                {item}
-            </ListGroup>
-        );
     }
+    if (!itemList) {
+        return <Spinner />
+    }
+    const item = renderItem(itemList);
+    return (
+        <ListGroup >
+            {item}
+        </ListGroup>
+    );
+
 }
+export default ItemList;

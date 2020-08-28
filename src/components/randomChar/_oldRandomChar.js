@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import styled from 'styled-components';
 import APIrequest from '../API/Api';
@@ -19,44 +19,53 @@ const RandomCharTitle = styled.h4`
         color: white;
 `
 
-const RandomChar = () => {
-    const [char, setChar] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(false);
-    const { getCharacter } = new APIrequest();
-    const setChars = () => {
-        const id = Math.floor(Math.random() * 250 + 35);
-        getCharacter(id)
-            .then((data) => {
-                setChar(data);
-                setLoading(false);
-            })
-            .catch(() => {
-                setError(true);
-                setLoading(false);
-            })
+export default class RandomChar extends Component {
+    APIrequest = new APIrequest();
+    state = {
+        char: {},
+        loading: true,
+        error: false
     }
-    useEffect(() => {
-        setChars();
-        let timerId = setInterval(setChars, 1500);
-        return () => {
-            clearInterval(timerId);
-        }
-    }, [loading]);
+    componentDidMount() {
+        this.setChar();
+        this.timerId = setInterval(this.setChar, 1500);
+    }
 
-    const someError = error ? <ErrorMessage /> : null
-    const content = !(error || loading) ? <Character char={char} /> : null
-    const spinner = loading ? <Spinner /> : null
-    return (
-        <RandomCharWrap>
-            {spinner}
-            {content}
-            {someError}
-        </RandomCharWrap>
-    )
+    componentWillUnmount() {
+        clearInterval(this.timerId);
+    }
+    onCharLoader = (char) => {
+        this.setState({ char });
+        this.setState({ loading: false });
+    }
+    errorMessage = () => {
+        this.setState({ 
+            error: true,
+            loading: false
+        });
+    }
+    setChar = () => {
+        const id = Math.floor(Math.random()*250 + 35);
+        this.APIrequest.getCharacter(id)
+            .then(this.onCharLoader)
+            .catch(this.errorMessage)
+    }
+    render() {
+        const { char, loading, error } = this.state;
+        const someError = error ? <ErrorMessage /> : null
+        const content = !(error || loading) ? <Character char={char}/> : null
+        const spinner = loading ? <Spinner/> : null
+        return (
+            <RandomCharWrap>
+                {spinner}
+                {content}
+                {someError}
+            </RandomCharWrap>
+        );
+    }
 }
 
-const Character = ({ char }) => {
+const Character = ({char}) => {
     const { name, gender, born, died, culture } = char
     return (
         <>
@@ -85,6 +94,4 @@ const Character = ({ char }) => {
             </Table>
         </>
     )
-}
-
-export default RandomChar;
+}  

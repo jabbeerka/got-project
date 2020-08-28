@@ -1,5 +1,5 @@
 import React from 'react';
-import ItemDetails, { Field } from '../../charDetails';
+import ItemDetails, { Field } from '../../itemDetails';
 import APIrequest from '../../API/Api';
 
 

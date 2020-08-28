@@ -1,6 +1,6 @@
 import React from 'react';
 import ItemList from '../../itemList';
-import ItemDetails, {Field}  from '../../charDetails';
+import ItemDetails, {Field}  from '../../itemDetails';
 import APIrequest from '../../API/Api';
 import RowBlock from '../../rowBlock/rowBlock';
 
